@@ -5,18 +5,19 @@ CREATE TABLE Companies (
   summary VARCHAR(255),
   dateFounded DATETIME,
   numberOfEmployees int,
+  fiscalDateEnd DATETIME,
   location
 
   PRIMARY KEY (companyID)
-)
+);
 
 CREATE TABLE Sectors (
   sectorID BIGINT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(255) NOT NULL UNIQUE,
+  sectorName VARCHAR(255) NOT NULL UNIQUE,
   description VARCHAR(255),
 
-  PRIMARY KEY (name)
-)
+  PRIMARY KEY (secotrName)
+);
 
 CREATE TABLE Industries (
   industryID BIGINT NOT NULL AUTO_INCREMENT,
@@ -24,5 +25,83 @@ CREATE TABLE Industries (
   description VARCHAR(255),
 
   PRIMARY KEY (industryID),
-  FOREIGN KEY (sector) REFERENCES Sectors(gameID)
-)
+  FOREIGN KEY (sector) REFERENCES Sectors(sectorID)
+);
+
+CREATE TABLE FiscalYear (
+  fiscalYear int(4) -- year is always 4 digits
+
+  FOREIGN KEY (company) REFERENCES Companies(companyID),
+  FOREIGN KEY (fiscalYear)
+);
+
+CREATE TABLE DayStat (
+  date DATETIME,
+  dayOfWeek VARCHAR((8),
+  volume int,
+  open decimal,
+  high decimal,
+  low decimal,
+  close decimal,
+  adjclose  DECIMAL,
+
+  FOREIGN KEY (company) REFERENCES Companies(companyID),
+  FOREIGN KEY (fiscalYear) REFERENCES FiscalYear(fiscalYear)
+);
+
+CREATE TABLE Leaders (
+  leaderID BIGINT NOT NULL AUTO_INCREMENT,
+  name VARCHAR,
+  role VARCHAR,
+  age INT,
+  gender VARCHAR,
+  startDate DATETIME,
+  endDate DATETIME,
+  founder BOOLEAN,
+
+  PRIMARY KEY (leaderID)
+);
+
+CREATE TABLE IPO (
+  ipoDate DATETIME,
+  lastSale DECIMAL,
+  CEOInChargeDuringIPO BOOLEAN,
+  presidentInChargeDuringIPO BOOLEAN,
+  revenue DECIMAL,
+  netIncome DECIMAL,
+  lastFiscalYearGrowth DECIMAL,
+  daysBetterThanSP INT,
+  daysProfit INT,
+  daysProfitGrouped INT,
+  exactDifference INT,
+  netIncomeYearBeforeIPO DECIMAL,
+  
+  FOREIGN KEY (fiscalYear) REFERENCES FiscalYear(fiscalYear),
+  FOREIGN KEY (sectorID) REFERENCES Sectors(sectorID),
+  FOREIGN KEY (industryID) REFERENCES Industries(industryID),
+  FOREIGN KEY (companyID) REFERENCES Companies(companyID)
+);
+
+CREATE TABLE AnnualReport (
+  revenue DECIMAL,
+  revenueGrowth DECIMAL,
+  costOfRevenue DECIMAL,
+  grossProfit DECIMAL,
+  operatingExpenses DECIMAL,
+  operatingIncome DECIMAL,
+  earningsBeforeTax DECIMAL,
+  incomeTaxExpense DECIMAL,
+  netIncome DECIMAL,
+  dividendPerShare DECIMAL,
+  grossMargin DECIMAL,
+  profitMargin DECIMAL,
+  freeCashFlowMargin DECIMAL,
+  totalCurrentAssets DECIMAL,
+  taxAssets DECIMAL,
+  payables DECIMAL,
+  totalDebt DECIMAL,
+
+  FOREIGN KEY (companyID) REFERENCES Companies(companyID),
+  FOREIGN KEY (fiscalYear) REFERENCES FiscalYear(year) 
+);
+
