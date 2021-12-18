@@ -35,7 +35,7 @@ CREATE TABLE FiscalYear (
   FOREIGN KEY (fiscalYear)
 );
 
-CREATE TABLE DayStat (
+CREATE TABLE DayStats (
   date DATETIME,
   dayOfWeek VARCHAR((8),
   volume int,
@@ -62,7 +62,7 @@ CREATE TABLE Leaders (
   PRIMARY KEY (leaderID)
 );
 
-CREATE TABLE IPO (
+CREATE TABLE IPOs (
   ipoDate DATETIME,
   lastSale DECIMAL,
   CEOInChargeDuringIPO BOOLEAN,
@@ -75,14 +75,14 @@ CREATE TABLE IPO (
   daysProfitGrouped INT,
   exactDifference INT,
   netIncomeYearBeforeIPO DECIMAL,
-  
+
   FOREIGN KEY (fiscalYear) REFERENCES FiscalYear(fiscalYear),
   FOREIGN KEY (sectorID) REFERENCES Sectors(sectorID),
   FOREIGN KEY (industryID) REFERENCES Industries(industryID),
   FOREIGN KEY (companyID) REFERENCES Companies(companyID)
 );
 
-CREATE TABLE AnnualReport (
+CREATE TABLE AnnualReports (
   revenue DECIMAL,
   revenueGrowth DECIMAL,
   costOfRevenue DECIMAL,
