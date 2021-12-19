@@ -1,6 +1,6 @@
 export const CompaniesApi = {
   show: (async () => {
-    const response = await fetch(`/api/derp/`, {
+    const response = await fetch(`/api/companies/derp/`, {
       method: 'get',
       mode: 'cors',
       headers: {
