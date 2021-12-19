@@ -1,6 +1,17 @@
-import { Table, Tag, Space } from 'antd';
+import { useEffect, useState } from 'react';
+import { Table } from 'antd';
+
+import { CompaniesApi } from '../api/Api'
 
 export function Companies() {
+
+  useEffect(() => {
+    (async () => {
+      const res = await CompaniesApi.show();
+      console.log(res);
+    })()
+  }, [])
+
   const columns = [
     {
       title: 'Name',

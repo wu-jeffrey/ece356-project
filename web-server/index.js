@@ -29,8 +29,10 @@ app.get('/api/companies', (req, res, next) => {
   );
 });
 
-app.get('/api/days', (req, res, next) => {
-  console.log('derp')
+app.get('/api/derp', (req, res, next) => {
+  console.log('derp');
+
+  res.send({ derp: 'derp' })
 });
 
 // Static route for frontend
