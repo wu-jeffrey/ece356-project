@@ -15,13 +15,13 @@ function App() {
           <Header>
             <div className="logo" />
             <Menu theme="dark" mode="horizontal">
-              <Menu.Item>
+              <Menu.Item key="home">
                 <NavLink to="/">Home</NavLink>
               </Menu.Item>
-              <Menu.Item>
+              <Menu.Item key="companies">
                 <NavLink to="/companies">Companies</NavLink>
               </Menu.Item>
-              <Menu.Item>
+              <Menu.Item key="history">
                 <NavLink to="/history">History</NavLink>
               </Menu.Item>
             </Menu>
