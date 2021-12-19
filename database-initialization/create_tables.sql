@@ -102,6 +102,14 @@ CREATE TABLE AnnualReports (
   totalDebt DECIMAL,
 
   FOREIGN KEY (companyID) REFERENCES Companies(companyID),
-  FOREIGN KEY (fiscalYear) REFERENCES FiscalYear(year) 
+  FOREIGN KEY (fiscalYear) REFERENCES FiscalYear(year)
 );
 
+CREATE TABLE Users (
+  userID BIGINT NOT NULL AUTO_INCREMENT,
+  email VARCHAR(255) UNIQUE,
+  password char(128) NOT NULL,
+  admin BOOLEAN,
+
+  PRIMARY KEY (userID)
+);
