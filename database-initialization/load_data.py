@@ -3,7 +3,7 @@ import pandas as pd
 
 data = pd.read_csv (r'/Users/ellenchoi/Desktop/short_datacsv/company.csv')   
 df = pd.DataFrame(data)
-
+df = df.dropna() # drop NaN rows
 print(df)
 connection = pymysql.connect(user='j387wu', password='terriblepassworD123!',
                               host='marmoset04.shoshin.uwaterloo.ca',
@@ -15,10 +15,11 @@ with connection:
         sql = '''
         CREATE TABLE Companies (
   companyID BIGINT NOT NULL AUTO_INCREMENT,
-  symbol VARCHAR(5) UNIQUE, -- no stock tickers in the dataset have more than 5 chars
+  symbol VARCHAR(5) UNIQUE, -- no stock tickers in the dataset have more than 5 chars,
+  name VARCHAR(255),
   industryID BIGINT,
   summary VARCHAR(255),
-  dateFounded DATETIME,
+  yearFounded int,
   numberOfEmployees int,
   fiscalDateEnd DATETIME,
   PRIMARY KEY (companyID)
@@ -30,8 +31,10 @@ with connection:
     connection.commit()
 
     with connection.cursor() as cursor:
-        # Read a single record
-        sql = "SELECT `companyID` FROM `Companies`"
-        cursor.execute(sql)
-        result = cursor.fetchone()
-        print(result)
+        # Input Company Data
+        for row in df.itertuples():
+            sql = "INSERT INTO `Companies` (`symbol`, `name`, `yearFounded`, `numberOfEmployees`) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (row.Symbol, row.Name, int(row.YearFounded), int(row.employees)))
+            connection.commit()
+            result = cursor.fetchone()
+            print(result)
