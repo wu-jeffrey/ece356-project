@@ -3,9 +3,10 @@ CREATE TABLE Companies (
   symbol VARCHAR(5) UNIQUE, -- no stock tickers in the dataset have more than 5 chars
   industryID INT,
   summary VARCHAR(255),
-  dateFounded DATETIME,
+  yearFounded INT(4),
   numberOfEmployees int,
   fiscalDateEnd DATETIME,
+  companyName VARCHAR(100),
   PRIMARY KEY (companyID)
 );
 
