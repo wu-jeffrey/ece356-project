@@ -26,7 +26,6 @@ router.post('/', (req, res, next) => {
           console.log(`User Created: ${email}`);
           res.send(result);
         }
-
       });
 
     });

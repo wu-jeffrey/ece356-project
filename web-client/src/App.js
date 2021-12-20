@@ -2,8 +2,9 @@ import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import { Layout, Menu } from 'antd';
 
 import { Home } from "./components/Home";
-import { Companies } from "./components/Companies"
-import { History } from "./components/History"
+import { Companies } from "./components/Companies";
+import { History } from "./components/History";
+import { LoginOrSignup } from "./components/LoginOrSignup";
 
 const { Header, Footer, Content } = Layout;
 
@@ -31,6 +32,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/companies" element={<Companies />} />
               <Route path="/history" element={<History />} />
+              <Route path="/login" element={<LoginOrSignup />} />
             </Routes>
           </Content>
           <Footer style={{ textAlign: 'center' }}>ECE 356 - Stocks Database ©2021 Created by Group 59</Footer>
