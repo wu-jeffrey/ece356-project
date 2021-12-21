@@ -84,10 +84,9 @@ with connection:
         file_name = pathlib.Path(__file__).parent / 'short_datacsv/IPODataFull.csv'
         df = convert_csv_to_df(file_name)
         for row in df.itertuples():
-            print(row)
-            sql = "INSERT INTO `IPOs` (`symbol`, `ipodate`, `lastSale`, `CEOInChargeDuringIPO`, `presidentInChargeDuringIPO`, `revenue`, `netIncome`, `lastFiscalYearGrowth`, `daysBetterthanSP`, `daysProfit`, `daysProfitGrouped`, `netIncomeYearBeforeIPO`, `fiscalYear`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            sql = "INSERT INTO `IPOs` (`symbol`, `ipodate`, `lastSale`, `CEOInChargeDuringIPO`, `presidentInChargeDuringIPO`, `revenue`, `netIncome`, `lastFiscalYearGrowth`, `daysBetterthanSP`, `daysProfit`, `netIncomeYearBeforeIPO`, `fiscalYear`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             ipoDate = datetime(row.Year, row.Month, row.Day).date()
-            cursor.execute(sql, (row.Symbol, ipoDate, row.LastSale, row.CEOInChargeDuringIPO, row.presidentInChargeDuringIPO, row.Revenue, row.netIncome, row.lastFiscalYearGrowth, row.DaysBetterThanSP, row.daysProfit, row.daysProfitGrouped, row.netIncome, ipoDate.year))
+            cursor.execute(sql, (row.Symbol, ipoDate, row.LastSale, True if row.CEOInChargeDuringIPO == 'Yes' else False, True if row.presidentInChargeDuringIPO == 'Yes' else False, row.Revenue, row.netIncome, row.lastFiscalYearGrowth, row.DaysBetterThanSP, row.daysProfit, row.netIncome, ipoDate.year))
             connection.commit()
         print("INSERTED INTO IPOs: ", len(df))
         
