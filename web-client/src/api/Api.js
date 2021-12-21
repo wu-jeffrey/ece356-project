@@ -17,13 +17,14 @@ export const CompaniesApi = {
 export const UsersApi = {
   login: (email, password) => {
     (async () => {
-      const response = await fetch(`/api/users/`, {
-        method: 'GET',
+      const response = await fetch(`/api/users/login`, {
+        method: 'POST',
         mode: 'cors',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ email: email, password: password }),
       });
       const data = response.json();
 
