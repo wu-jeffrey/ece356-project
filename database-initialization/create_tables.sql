@@ -5,7 +5,7 @@ CREATE TABLE Companies (
   summary VARCHAR(255),
   yearFounded INT(4),
   numberOfEmployees int,
-  fiscalDateEnd DATETIME,
+  fiscalDateEnd INT(4),
   companyName VARCHAR(100),
   PRIMARY KEY (companyID)
 );
@@ -36,13 +36,14 @@ CREATE TABLE FiscalYear (
 CREATE TABLE DayStats (
   dayStatID int NOT NULL AUTO_INCREMENT,
   date DATETIME NOT NULL,
-  dayOfWeeks int(1),
+  dayOfWeek VARCHAR(10),
   volume int,
   open float,
   high float,
   low float,
   close float,
   adjclose  float,
+  symbol VARCHAR(5),
   companyID INT,
   fiscalYear int(4),
   PRIMARY KEY (dayStatID),
@@ -55,14 +56,15 @@ CREATE TABLE Leaders (
   role VARCHAR(100),
   age INT,
   gender VARCHAR(10),
-  startDate DATETIME,
-  endDate DATETIME,
+  startDate INT(4),
+  endDate INT(4),
   founder BOOLEAN,
   company VARCHAR(255),
   PRIMARY KEY (leaderID)
 );
 
 CREATE TABLE IPOs (
+  symbol VARCHAR(5),
   ipoDate DATETIME,
   lastSale float,
   CEOInChargeDuringIPO BOOLEAN,
@@ -86,6 +88,7 @@ CREATE TABLE IPOs (
 );
 
 CREATE TABLE AnnualReports (
+  symbol VARCHAR(5),
   revenue float,
   revenueGrowth float,
   costOfRevenue float,
@@ -94,13 +97,21 @@ CREATE TABLE AnnualReports (
   operatingIncome float,
   earningsBeforeTax float,
   incomeTaxExpense float,
+  totalAssets float,
+  investments float,
   netIncome float,
-  dividendPerShare float,
-  grossMargin float,
-  profitMargin float,
-  freeCashFlowMargin float,
-  totalCurrentAssets float,
-  taxAssets float,
+  netDebt float,
+  netCashFlow float,
+  freeCashFlow float,
+  dividendYield float,
+  grossProfitMargin float,
+  totalCurrentAsset float,
+  netProfitMargin float,
+  grossProfitGrowth float,
+  operatingIncomeGrowth float,
+  assetGrowth float,
+  netIncomeGrowth float,
+  marketCap float,
   payables float,
   totalDebt float,
   companyID INT,

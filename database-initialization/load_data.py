@@ -1,7 +1,8 @@
 import pymysql.cursors
 import pandas as pd
 import pathlib
-import datetime as dt
+from datetime import datetime
+import calendar
 
 connection = pymysql.connect(user='j387wu', password='terriblepassworD123!',
                               host='marmoset04.shoshin.uwaterloo.ca',
@@ -36,6 +37,9 @@ def convert_csv_to_df(filename):
 
 with connection:
     with connection.cursor() as cursor:
+        # DELETE ALL TABLES
+        cursor.execute("DROP TABLE IF EXISTS `AnnualReports`, `Companies`, `DayStats`, `FiscalYear`, `IPOs`, `Industries`, `Leaders`, `Sectors`")
+        connection.commit()
         # Create Tables
         fn = pathlib.Path(__file__).parent / 'create_tables.sql'
         executeScriptsFromFile(cursor, fn)
@@ -50,16 +54,56 @@ with connection:
             cursor.execute(sql, (row.Symbol, row.Name, int(row.YearFounded), int(row.employees)))
             connection.commit()
             result = cursor.fetchone()
-            print(result)
+        print("INSERTED INTO COMPANIES: ", len(df))
         
         # Input Leader Data
         file_name = pathlib.Path(__file__).parent / 'short_datacsv/leader.csv'
         df = convert_csv_to_df(file_name)
         for row in df.itertuples():
-            sql = "INSERT INTO `Leaders` (`name`, `age`, `gender`, `startDate`VALUES (%s, %s, %s, %s, %s)"
+            sql = "INSERT INTO `Leaders` (`name`, `age`, `gender`, `startDate` ) VALUES (%s, %s, %s, %s)"
             cursor.execute(sql, (row.CEOName, row.CEOAge, row.CEOGender, row.CEOTakeOver))
             connection.commit()
             result = cursor.fetchone()
-            print(result)
+        print("INSERTED INTO LEADERS: ", len(df))
+        
+        
+        # Insert DayStats
 
-        df = convert_csv_to_df()
+        file_name = pathlib.Path(__file__).parent / 'short_datacsv/dayStat.csv'
+        df = convert_csv_to_df(file_name)
+        yy_mm_dd = '%Y/%m/%d'
+
+        for row in df.itertuples():
+            sql = "INSERT INTO `DayStats` (`date`, `dayOfWeek`, `volume`, `open`, `high`, `low`, `close`, `adjclose`, `symbol`, `fiscalYear`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            date = datetime.strptime(row.date, yy_mm_dd)
+            cursor.execute(sql, (date.date(), calendar.day_name[date.weekday()], row.volume, row.open, row.high, row.low, row.close, row.adjclose, row.symbol, date.year))
+            connection.commit()
+        print("INSERTED INTO DayStats: ", len(df))
+        
+        # Insert IPOs
+        file_name = pathlib.Path(__file__).parent / 'short_datacsv/IPODataFull.csv'
+        df = convert_csv_to_df(file_name)
+        for row in df.itertuples():
+            print(row)
+            sql = "INSERT INTO `IPOs` (`symbol`, `ipodate`, `lastSale`, `CEOInChargeDuringIPO`, `presidentInChargeDuringIPO`, `revenue`, `netIncome`, `lastFiscalYearGrowth`, `daysBetterthanSP`, `daysProfit`, `daysProfitGrouped`, `netIncomeYearBeforeIPO`, `fiscalYear`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            ipoDate = datetime(row.Year, row.Month, row.Day).date()
+            cursor.execute(sql, (row.Symbol, ipoDate, row.LastSale, 1 if row.CEOInChargeDuringIPO == 'Yes' else 0, 1 if row.presidentInChargeDuringIPO == 'Yes' else 0, row.Revenue, row.netIncome, row.lastFiscalYearGrowth, row.DaysBetterThanSP, row.daysProfit, row.daysProfitGrouped, row.netIncome, ipoDate.year))
+            connection.commit()
+        print("INSERTED INTO IPOs: ", len(df))
+        
+        # # Insert Annual Reports
+        file_name = pathlib.Path(__file__).parent / 'short_datacsv/2014AnnualReport.csv'
+        df = convert_csv_to_df(file_name)
+        for row in df.itertuples():
+            sql = """
+            INSERT INTO `AnnualReports` (`symbol`, `revenue`, `revenueGrowth`, `costOfRevenue`, `grossProfit`, `operatingExpenses`, `operatingIncome`, `earningsBeforeTax`, 
+            `incomeTaxExpense`, `netIncome`, `totalAssets`, `investments`, `netDebt`, `netCashFlow`, `freeCashFlow`, `dividendYield`, `grossProfitMargin`,
+            `totalCurrentAsset`,`payables`, `totalDebt`,
+            `netProfitMargin`, `marketCap`, `grossProfitGrowth`, `operatingIncomeGrowth`, `netIncomeGrowth`, `assetGrowth`) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+            
+            cursor.execute(sql, (row.Symbol, row.Revenue, row.RevenueGrowth, row.CostOfRevenue, row.GrossProfit, row.OperatingExpenses, row.OperatingIncome, row.EarningsBeforeTax, row.IncomeTaxExpense, row.NetIncome,
+            row.TotalAssets, row.Investments, row.NetDebt, row.NetCashFlow, row.FreeCashFlow, row.dividendYield, row.grossProfitMargin, 
+            row.TotalCurrentAsset, row.Payables, row.TotalDebt, row.netProfitMargin, row.marketCap, row.grossProfitGrowth, row.operatingIncomeGrowth, row.netIncomeGrowth, row.AssetGrowth))
+            connection.commit()
+        print("INSERTED INTO AnnualReport: ", len(df))
