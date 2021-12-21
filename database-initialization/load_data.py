@@ -87,7 +87,7 @@ with connection:
             print(row)
             sql = "INSERT INTO `IPOs` (`symbol`, `ipodate`, `lastSale`, `CEOInChargeDuringIPO`, `presidentInChargeDuringIPO`, `revenue`, `netIncome`, `lastFiscalYearGrowth`, `daysBetterthanSP`, `daysProfit`, `daysProfitGrouped`, `netIncomeYearBeforeIPO`, `fiscalYear`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             ipoDate = datetime(row.Year, row.Month, row.Day).date()
-            cursor.execute(sql, (row.Symbol, ipoDate, row.LastSale, 1 if row.CEOInChargeDuringIPO == 'Yes' else 0, 1 if row.presidentInChargeDuringIPO == 'Yes' else 0, row.Revenue, row.netIncome, row.lastFiscalYearGrowth, row.DaysBetterThanSP, row.daysProfit, row.daysProfitGrouped, row.netIncome, ipoDate.year))
+            cursor.execute(sql, (row.Symbol, ipoDate, row.LastSale, row.CEOInChargeDuringIPO, row.presidentInChargeDuringIPO, row.Revenue, row.netIncome, row.lastFiscalYearGrowth, row.DaysBetterThanSP, row.daysProfit, row.daysProfitGrouped, row.netIncome, ipoDate.year))
             connection.commit()
         print("INSERTED INTO IPOs: ", len(df))
         
