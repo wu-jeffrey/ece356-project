@@ -124,3 +124,11 @@ CREATE TABLE AnnualReports (
   FOREIGN KEY (companyID) REFERENCES Companies(companyID)
   );
 
+CREATE TABLE Users (
+  userID BIGINT NOT NULL AUTO_INCREMENT,
+  email VARCHAR(255) UNIQUE,
+  password char(128) NOT NULL,
+  admin BOOLEAN,
+
+  PRIMARY KEY (userID)
+);
