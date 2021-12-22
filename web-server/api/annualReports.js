@@ -7,7 +7,7 @@ router.get('/:annualReportID', (req, res, next) => {
   db.query(`
     SELECT revenue, revenueGrowth, costOfRevenue, grossProfit, operatingExpenses,
       operatingIncome, earningsBeforeTax, incomeTaxExpense, totalAssets, investments,
-      netIncome, netDebt, netCashFlow, freeCashFlow, dividendYield, grossProfitMargin,
+      netIncome, netDebt, netCashFlow, freeCashFlow, dividendYield,
       totalCurrentAsset, netProfitMargin, grossProfitMargin, operatingIncomeGrowth,
       assetGrowth, operatingIncomeGrowth, assetGrowth, netIncomeGrowth, marketCap,
       payables, totalDebt, year, C.companyName AS companyName, C.companyID AS companyID
