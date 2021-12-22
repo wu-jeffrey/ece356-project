@@ -29,9 +29,6 @@ function App() {
                       <Menu.Item key="companies">
                         <NavLink to="/companies">Companies</NavLink>
                       </Menu.Item>
-                      <Menu.Item key="history">
-                        <NavLink to="/history">History</NavLink>
-                      </Menu.Item>
                       <Menu.Item style={{ marginLeft: 'auto' }} onClick={logout} key="logout">
                         <div>Logout</div>
                       </Menu.Item>
