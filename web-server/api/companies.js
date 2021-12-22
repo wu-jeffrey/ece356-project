@@ -5,22 +5,25 @@ const router = express.Router();
 
 router.get('/', (req, res, next) => {
   db.query(
-    'SELECT * FROM `TeamInfo`',
-    function (err, results, fields) {
-      console.log(results); // results contains rows returned by server
-      console.log(fields); // fields contains extra meta data about results, if available
+    "SELECT symbol, companyName, companyID FROM Companies",
+    function (err, results) {
+      if (err) return next(err);
+      res.json({ companies: results });
     }
   );
 });
 
-router.get('/derp', (req, res, next) => {
-  db.query(
-    'SELECT * FROM `TeamInfo`',
-    function (err, results, fields) {
-      res.send({ fields });
+router.get('/:companyID', (req, res, next) => {
+  db.query(`
+    SELECT symbol, companyName, companyID, sectorName, industryName, numberOfEmployees, city, stateCountry
+    FROM Companies
+    WHERE companyID = ${req.params.companyID}
+    `,
+    function (err, results) {
+      if (err) return next(err);
+      res.json({ company: results[0] });
     }
   );
-
 });
 
 module.exports = router;

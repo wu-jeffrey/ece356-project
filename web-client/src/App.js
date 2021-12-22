@@ -5,6 +5,7 @@ import { AuthProvider, AuthConsumer } from "./routing/authContext";
 import { ProtectedRoute } from "./routing/ProtectedRoute";
 import { Home } from "./components/Home";
 import { Companies } from "./components/Companies";
+import { Company } from "./components/Company";
 import { History } from "./components/History";
 import { LoginOrSignup } from "./components/LoginOrSignup";
 
@@ -17,7 +18,7 @@ function App() {
         <AuthProvider>
           <AuthConsumer>
             {({ isAuth, logout }) => (
-              <Layout className="layout" style={{ height: '100vh' }}>
+              <Layout className="layout" style={{ minHeight: '100vh' }}>
                 <Header>
                   {isAuth && (
                     <Menu theme="dark" mode="horizontal">
@@ -36,12 +37,13 @@ function App() {
                     </Menu>
                   )}
                 </Header>
-                <Content style={{ padding: 64 }}>
+                <Content style={{ padding: 24 }}>
                   <Routes>
                     <Route path="*" element={<div>404 NOT FOUND</div>}></Route>
                     <Route path="/" element={<ProtectedRoute children={<Home />} />} />
                     <Route path="/login" element={<LoginOrSignup />} />
                     <Route path="/companies" element={<ProtectedRoute children={<Companies />} />} />
+                    <Route path="/companies/:companyID" element={<ProtectedRoute children={<Company />} />} />
                     <Route path="/history" element={<ProtectedRoute children={<History />} />} />
                   </Routes>
                 </Content>

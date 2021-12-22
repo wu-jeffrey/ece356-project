@@ -1,46 +1,50 @@
 import { useEffect, useState } from 'react';
-import { Table } from 'antd';
-
-import { CompaniesApi } from '../api/Api'
+import { Table, Button } from 'antd';
 
 export function Companies() {
+  const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const res = await CompaniesApi.show();
-    })()
+      const response = await fetch(`/api/companies/`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }
+      });
+      const data = await response.json();
+
+      console.log(data);
+      setCompanies(data.companies.map((c, i) => { c['key'] = i; return c; }));
+    })();
   }, [])
 
   const columns = [
     {
+      title: 'Symbol',
+      dataIndex: 'symbol',
+      key: 'symbol',
+    },
+    {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'companyName',
+      key: 'companyName',
     },
     {
-      title: 'Ticker',
-      dataIndex: 'ticker',
-      key: 'age',
-    },
-  ];
-
-  const data = [
-    {
-      key: '1',
-      name: 'Tesla',
-      ticker: 'TSLA'
-    },
-    {
-      key: '2',
-      name: 'Apple',
-      ticker: 'AAPL'
+      title: ' ',
+      key: 'action',
+      render: (text, record) => (
+        <Button href={`/companies/${record.companyID}`}>Details</Button>
+      ),
     },
   ];
 
   return (
     <div>
       <h2>Companies</h2>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={companies} />
     </div>
   );
 }
