@@ -33,7 +33,19 @@ router.get('/:companyID', (req, res, next) => {
         `,
         function (ar_err, annual_report_results) {
           if (ar_err) return next(ar_err);
-          res.json({ company: results[0], annualReports: annual_report_results });
+
+          db.query(`
+            WITH
+              CompanyStats as (SELECT date, dayOfWeek, volume, open, high, low, close, adjclose FROM DayStats WHERE companyID = ${req.params.companyID})
+
+            SELECT * FROM CompanyStats
+            WHERE date = (SELECT MAX(date) FROM CompanyStats);
+            `,
+            function (ds_err, ds_results) {
+              if (ds_err) return next(ds_err);
+              res.json({ company: results[0], annualReports: annual_report_results, mostRecentDayStat: ds_results[0] });
+            }
+          );
         }
       );
     }
