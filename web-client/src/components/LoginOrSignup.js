@@ -1,13 +1,25 @@
 import { Form, Input, Button, Card, Tabs } from 'antd';
 
-import { UsersApi } from '../api/Api'
+import { useAuth } from '../routing/authContext';
 
 export function LoginOrSignup() {
+  const { login } = useAuth();
+
   const onLogin = ({ email, password }) => {
     (async () => {
-      const res = await UsersApi.login(email, password);
-      console.log(res);
-    })()
+      const response = await fetch(`/api/users/login`, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, password: password }),
+      });
+      const data = await response.json();
+
+      login(data.user, data.token)
+    })();
   };
 
   const onSignup = ({ email, password, confirm_password }) => {
@@ -15,11 +27,22 @@ export function LoginOrSignup() {
       alert("Passwords do not match!")
     } else {
       (async () => {
-        const res = await UsersApi.create(email, password);
-        console.log(res);
+        const response = await fetch(`/api/users/`, {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: email, password: password }),
+        });
+
+        if (response.status === 200) {
+          onLogin({ email, password });
+        }
       })();
     }
-  };
+  }
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);

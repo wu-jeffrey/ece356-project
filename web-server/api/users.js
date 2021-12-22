@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../db');
 const jwt = require('jsonwebtoken');
 const sha512 = require('js-sha512');
+const auth = require('../middleware/auth')
 
 const jwtSecret = 'terrible-secret-such-bad-much-wow';
 const router = express.Router();
@@ -29,6 +30,28 @@ router.post('/', (req, res, next) => {
 });
 
 // @route GET api/users/login
+// @desc Authenticate a user
+// @access Public
+router.get('/login', auth, (req, res, next) => {
+  const sql = `
+    SELECT userID, email, role FROM Users
+    WHERE userID = '${req.userID}';
+  `;
+
+  console.log(sql)
+
+  db.query(sql, (err, result) => {
+    if (err) return next(err);
+    res.json({
+      user: {
+        id: result.userID, email: result.email, admin: result.admin
+      }
+    });
+  });
+
+});
+
+// @route POST api/users/login
 // @desc Authenticate a user
 // @access Public
 router.post('/login', (req, res, next) => {
@@ -59,7 +82,7 @@ router.post('/login', (req, res, next) => {
             if (err) { next(err); }
 
             res.json({
-              token,
+              token: token,
               user: {
                 id: user.userID,
                 email: user.email,
