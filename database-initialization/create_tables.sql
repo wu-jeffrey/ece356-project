@@ -61,7 +61,7 @@ CREATE TABLE Leaders (
   name VARCHAR(100),
   role VARCHAR(100),
   age INT,
-  gender VARCHAR(10),
+  gender VARCHAR(20),
   startDate INT(4),
   endDate INT(4),
   founder BOOLEAN,
