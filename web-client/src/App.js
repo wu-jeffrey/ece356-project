@@ -17,7 +17,7 @@ function App() {
         <AuthProvider>
           <AuthConsumer>
             {({ isAuth, logout }) => (
-              <Layout className="layout" style={{ height: '100vh' }}>
+              <Layout className="layout" style={{ minHeight: '100vh' }}>
                 <Header>
                   {isAuth && (
                     <Menu theme="dark" mode="horizontal">
@@ -36,7 +36,7 @@ function App() {
                     </Menu>
                   )}
                 </Header>
-                <Content style={{ padding: 64 }}>
+                <Content style={{ padding: 24 }}>
                   <Routes>
                     <Route path="*" element={<div>404 NOT FOUND</div>}></Route>
                     <Route path="/" element={<ProtectedRoute children={<Home />} />} />
