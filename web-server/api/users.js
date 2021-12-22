@@ -34,7 +34,7 @@ router.post('/', (req, res, next) => {
 // @access Public
 router.get('/login', auth, (req, res, next) => {
   const sql = `
-    SELECT userID, email, role FROM Users
+    SELECT userID, email, admin FROM Users
     WHERE userID = '${req.userID}';
   `;
 
