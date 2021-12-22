@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { UsersApi } from '../api/Api'
-
 const AuthContext = React.createContext();
 
 class AuthProvider extends React.Component {
@@ -55,6 +53,7 @@ class AuthProvider extends React.Component {
   logout() {
     this.setState({ isAuth: false, token: undefined, user: undefined });
     localStorage.removeItem('token');
+    window.location.reload();
   }
 
   render() {

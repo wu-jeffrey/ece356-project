@@ -16,10 +16,9 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <AuthConsumer>
-            {({ isAuth }) => (
+            {({ isAuth, logout }) => (
               <Layout className="layout" style={{ height: '100vh' }}>
                 <Header>
-                  <div className="logo" />
                   {isAuth && (
                     <Menu theme="dark" mode="horizontal">
                       <Menu.Item key="home">
@@ -30,6 +29,9 @@ function App() {
                       </Menu.Item>
                       <Menu.Item key="history">
                         <NavLink to="/history">History</NavLink>
+                      </Menu.Item>
+                      <Menu.Item style={{ marginLeft: 'auto' }} key="logout">
+                        <div type="text" onClick={() => { logout(); }}>Logout</div>
                       </Menu.Item>
                     </Menu>
                   )}

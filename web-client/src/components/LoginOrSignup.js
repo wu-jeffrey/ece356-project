@@ -10,7 +10,7 @@ export function LoginOrSignup() {
 
   useEffect(() => {
     if (isAuth) {
-      navigate('/home');
+      navigate('/');
     }
   })
 
