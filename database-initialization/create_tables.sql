@@ -2,6 +2,11 @@ CREATE TABLE Companies (
   companyID  int NOT NULL AUTO_INCREMENT,
   symbol VARCHAR(5) UNIQUE, -- no stock tickers in the dataset have more than 5 chars
   industryID INT,
+  sectorID INT,
+  industryName VARCHAR(255),
+  sectorName VARCHAR(255),
+  city VARCHAR(255),
+  stateCountry VARCHAR(255),
   summary VARCHAR(255),
   yearFounded INT(4),
   numberOfEmployees int,
@@ -23,6 +28,7 @@ CREATE TABLE Industries (
   name VARCHAR(255) NOT NULL UNIQUE,
   description VARCHAR(255),
   sectorID INT,
+  sectorName VARCHAR(255),
   PRIMARY KEY (industryID),
   FOREIGN KEY (sectorID) REFERENCES Sectors(sectorID)
 );
