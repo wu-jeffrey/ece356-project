@@ -8,7 +8,6 @@ export function Companies() {
   useEffect(() => {
     (async () => {
       const res = await CompaniesApi.show();
-      console.log(res);
     })()
   }, [])
 

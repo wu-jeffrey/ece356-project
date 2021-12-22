@@ -55,7 +55,7 @@ CREATE TABLE DayStats (
   PRIMARY KEY (dayStatID),
   FOREIGN KEY (companyID) REFERENCES Companies(companyID)
   );
-  
+
 CREATE TABLE Leaders (
   leaderID  int NOT NULL AUTO_INCREMENT,
   name VARCHAR(100),
@@ -124,3 +124,11 @@ CREATE TABLE AnnualReports (
   FOREIGN KEY (companyID) REFERENCES Companies(companyID)
   );
 
+CREATE TABLE Users (
+  userID BIGINT NOT NULL AUTO_INCREMENT,
+  email VARCHAR(255) UNIQUE,
+  password char(128) NOT NULL,
+  admin BOOLEAN NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (userID)
+);

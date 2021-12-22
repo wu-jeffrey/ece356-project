@@ -14,8 +14,6 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/derp', (req, res, next) => {
-  console.log('derp');
-
   db.query(
     'SELECT * FROM `TeamInfo`',
     function (err, results, fields) {
