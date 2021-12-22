@@ -52,4 +52,28 @@ router.get('/:companyID', (req, res, next) => {
   );
 });
 
+router.get('/:companyID/history', (req, res, next) => {
+  db.query(`
+    SELECT date, open, close, volume, high, low, C.companyName AS companyName
+    FROM Companies AS C
+      INNER JOIN DayStats ON C.companyID = DayStats.companyID
+    WHERE C.CompanyID = ${req.params.companyID} ORDER BY date DESC;
+    `,
+    function (err, results) {
+      if (err) return next(err);
+      let dayStats = [];
+      let company = {};
+      if (results.length > 0) {
+        dayStats = results.map(({ companyName, companyID, ...dayStats }) => dayStats)
+        company = {
+          companyID: req.params.companyName,
+          companyName: results[0].companyName
+        }
+      }
+
+      res.json({ dayStats: dayStats, company: company });
+    }
+  );
+});
+
 module.exports = router;
