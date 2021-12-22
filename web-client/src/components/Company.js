@@ -75,11 +75,11 @@ export function Company() {
             },
             {
               title: 'Revenue Growth', dataIndex: 'revenueGrowth', key: 'revenueGrowth',
-              render: (text, record) => (<>{100 * Number(text)} %</>),
+              render: (text, record) => (<Statistic suffix="%" value={text * 100} precision={2} groupSeparator='' valueStyle={{ fontSize: 14 }} />),
             },
             {
               title: 'Dividend Yield', dataIndex: 'dividendYield', key: 'dividendYield',
-              render: (text, record) => (<>{100 * Number(text)} %</>)
+              render: (text, record) => (<Statistic suffix="%" value={text * 100} precision={2} groupSeparator='' valueStyle={{ fontSize: 14 }} />)
             },
             {
               title: ' ',
