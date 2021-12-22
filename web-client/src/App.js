@@ -6,6 +6,7 @@ import { ProtectedRoute } from "./routing/ProtectedRoute";
 import { Home } from "./components/Home";
 import { Companies } from "./components/Companies";
 import { Company } from "./components/Company";
+import { AnnualReport } from "./components/AnnualReport";
 import { History } from "./components/History";
 import { LoginOrSignup } from "./components/LoginOrSignup";
 
@@ -44,6 +45,7 @@ function App() {
                     <Route path="/login" element={<LoginOrSignup />} />
                     <Route path="/companies" element={<ProtectedRoute children={<Companies />} />} />
                     <Route path="/companies/:companyID" element={<ProtectedRoute children={<Company />} />} />
+                    <Route path="/annual-report/:annualReportID" element={<ProtectedRoute children={<AnnualReport />} />} />
                     <Route path="/history" element={<ProtectedRoute children={<History />} />} />
                   </Routes>
                 </Content>
