@@ -25,7 +25,7 @@ export function Company() {
 
   return (
     <>
-      <h2>Company Details</h2>
+      <h2>{company?.companyName}</h2>
       <Breadcrumb>
         <Breadcrumb.Item>
           <a href="/companies">Companies</a>
@@ -37,6 +37,7 @@ export function Company() {
       <Divider />
 
       <Card style={{ margin: 12 }} >
+        <h3>Details</h3>
         <h4>Stock Symbol</h4>{company.symbol}
         <Divider />
         <h4>Sector</h4>{company.sectorName}
@@ -49,14 +50,12 @@ export function Company() {
       </Card>
 
       <Card style={{ margin: 12 }} >
-        <h3>Leadership</h3>
-        <h4>Name</h4>{ }
+        <h3>CEO</h3>
+        <h4>Name</h4>{company.leaderName}
         <Divider />
-        <h4>Role</h4>{ }
+        <h4>Age</h4>{company.leaderAge}
         <Divider />
-        <h4>Age</h4>{ }
-        <Divider />
-        <h4>Gender</h4>{ }
+        <h4>Gender</h4>{company.leaderGender}
       </Card>
 
       <Card style={{ margin: 12 }} >
