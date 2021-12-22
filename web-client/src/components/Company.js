@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Card, Button, Breadcrumb, Divider } from 'antd';
+import { Card, Button, Table, Breadcrumb, Divider, Statistic } from 'antd';
 import { useParams } from 'react-router-dom';
 
 export function Company() {
   const params = useParams();
-  const [company, setCompany] = useState([]);
+  const [company, setCompany] = useState({});
+  const [annualReports, setAnnualReports] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -20,6 +21,7 @@ export function Company() {
 
       console.log(data);
       setCompany(data.company);
+      setAnnualReports(data.annualReports.map((c, i) => { c['key'] = i; return c; }));
     })();
   }, [])
 
@@ -64,6 +66,29 @@ export function Company() {
 
       <Card style={{ margin: 12 }} >
         <h3>Fiscal Reports</h3>
+        <Table
+          columns={[
+            { title: 'Year', dataIndex: 'year', key: 'year' },
+            {
+              title: 'Revenue', dataIndex: 'revenue', key: 'revenue',
+              render: (text, record) => (<Statistic prefix="$" value={text} valueStyle={{ fontSize: 14 }} />),
+            },
+            {
+              title: 'Revenue Growth', dataIndex: 'revenueGrowth', key: 'revenueGrowth',
+              render: (text, record) => (<>{100 * Number(text)} %</>),
+            },
+            {
+              title: 'Dividend Yield', dataIndex: 'dividendYield', key: 'dividendYield',
+              render: (text, record) => (<>{100 * Number(text)} %</>)
+            },
+            {
+              title: ' ',
+              key: 'action',
+              render: (text, record) => (<Button href={`/annual-report/${record.annualReportID}`}>Details</Button>),
+            },
+          ]}
+          dataSource={annualReports}
+        />
       </Card>
     </>
   );
