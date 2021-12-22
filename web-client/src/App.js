@@ -45,8 +45,8 @@ function App() {
                     <Route path="/login" element={<LoginOrSignup />} />
                     <Route path="/companies" element={<ProtectedRoute children={<Companies />} />} />
                     <Route path="/companies/:companyID" element={<ProtectedRoute children={<Company />} />} />
+                    <Route path="/companies/:companyID/history" element={<ProtectedRoute children={<History />} />} />
                     <Route path="/annual-report/:annualReportID" element={<ProtectedRoute children={<AnnualReport />} />} />
-                    <Route path="/history" element={<ProtectedRoute children={<History />} />} />
                   </Routes>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>ECE 356 - Stocks Database ©2021 Created by Group 59</Footer>

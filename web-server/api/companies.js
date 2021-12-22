@@ -33,9 +33,45 @@ router.get('/:companyID', (req, res, next) => {
         `,
         function (ar_err, annual_report_results) {
           if (ar_err) return next(ar_err);
-          res.json({ company: results[0], annualReports: annual_report_results });
+
+          db.query(`
+            WITH
+              CompanyStats as (SELECT date, dayOfWeek, volume, open, high, low, close, adjclose FROM DayStats WHERE companyID = ${req.params.companyID})
+
+            SELECT * FROM CompanyStats
+            WHERE date = (SELECT MAX(date) FROM CompanyStats);
+            `,
+            function (ds_err, ds_results) {
+              if (ds_err) return next(ds_err);
+              res.json({ company: results[0], annualReports: annual_report_results, mostRecentDayStat: ds_results[0] });
+            }
+          );
         }
       );
+    }
+  );
+});
+
+router.get('/:companyID/history', (req, res, next) => {
+  db.query(`
+    SELECT date, open, close, volume, high, low, C.companyName AS companyName
+    FROM Companies AS C
+      INNER JOIN DayStats ON C.companyID = DayStats.companyID
+    WHERE C.CompanyID = ${req.params.companyID} ORDER BY date DESC;
+    `,
+    function (err, results) {
+      if (err) return next(err);
+      let dayStats = [];
+      let company = {};
+      if (results.length > 0) {
+        dayStats = results.map(({ companyName, companyID, ...dayStats }) => dayStats)
+        company = {
+          companyID: req.params.companyName,
+          companyName: results[0].companyName
+        }
+      }
+
+      res.json({ dayStats: dayStats, company: company });
     }
   );
 });

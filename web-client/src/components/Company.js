@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Card, Button, Table, Breadcrumb, Divider, Statistic } from 'antd';
+import { Card, Button, Table, Breadcrumb, Divider, Statistic, Row, Col, Empty } from 'antd';
 import { useParams } from 'react-router-dom';
 
 export function Company() {
   const params = useParams();
   const [company, setCompany] = useState({});
   const [annualReports, setAnnualReports] = useState([]);
+  const [mostRecentDayStat, setMostRecentDayStat] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -22,6 +23,7 @@ export function Company() {
       console.log(data);
       setCompany(data.company);
       setAnnualReports(data.annualReports.map((c, i) => { c['key'] = i; return c; }));
+      setMostRecentDayStat(data.mostRecentDayStat);
     })();
   }, [])
 
@@ -39,8 +41,47 @@ export function Company() {
       <Divider />
 
       <Card style={{ margin: 12 }} >
+        <h2>{company?.symbol} (Most Recent Stock Info) <Button href={`/companies/${company?.companyID}/history`} style={{ float: 'right' }}>Full History</Button></h2>
+        {mostRecentDayStat ? (<Row gutter={24}>
+          <Col span={4}>
+            <Card>
+              <Statistic title="Date" value={
+                (new Date(mostRecentDayStat?.date)).toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' })
+              }
+                valueStyle={{ fontSize: 14 }} />
+            </Card>
+          </Col>
+          <Col span={4}>
+            <Card>
+              <Statistic title="Open" prefix="$" value={mostRecentDayStat?.open} valueStyle={{ fontSize: 14 }} />
+            </Card>
+          </Col>
+          <Col span={4}>
+            <Card>
+              <Statistic title="Close" prefix="$" value={mostRecentDayStat?.close} valueStyle={{ fontSize: 14 }} />
+            </Card>
+          </Col>
+          <Col span={4}>
+            <Card>
+              <Statistic title="Volume" value={mostRecentDayStat?.volume} valueStyle={{ fontSize: 14 }} />
+            </Card>
+          </Col>
+          <Col span={4}>
+            <Card>
+              <Statistic title="High" prefix="$" value={mostRecentDayStat?.high} valueStyle={{ fontSize: 14 }} />
+            </Card>
+          </Col>
+          <Col span={4}>
+            <Card>
+              <Statistic title="Low" prefix="$" value={mostRecentDayStat?.low} valueStyle={{ fontSize: 14 }} />
+            </Card>
+          </Col>
+        </Row>) : (<Empty />)}
+      </Card>
+
+
+      <Card style={{ margin: 12 }} >
         <h3>Details</h3>
-        <h4>Stock Symbol</h4>{company.symbol}
         <Divider />
         <h4>Sector</h4>{company.sectorName}
         <Divider />
@@ -53,15 +94,12 @@ export function Company() {
 
       <Card style={{ margin: 12 }} >
         <h3>CEO</h3>
+        <Divider />
         <h4>Name</h4>{company.leaderName}
         <Divider />
         <h4>Age</h4>{company.leaderAge}
         <Divider />
         <h4>Gender</h4>{company.leaderGender}
-      </Card>
-
-      <Card style={{ margin: 12 }} >
-        <h3>Trade Statistics</h3>
       </Card>
 
       <Card style={{ margin: 12 }} >
