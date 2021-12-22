@@ -70,6 +70,7 @@ CREATE TABLE Leaders (
 );
 
 CREATE TABLE IPOs (
+  ipoID INT NOT NULL AUTO_INCREMENT,
   symbol VARCHAR(5),
   ipoDate DATETIME,
   lastSale float,
@@ -86,13 +87,14 @@ CREATE TABLE IPOs (
   sectorID INT,
   industryID INT,
   companyID INT,
-  -- FOREIGN KEY (fiscalYear) REFERENCES FiscalYear(fiscalYear),
+  PRIMARY KEY (ipoID),
   FOREIGN KEY (sectorID) REFERENCES Sectors(sectorID),
   FOREIGN KEY (industryID) REFERENCES Industries(industryID),
   FOREIGN KEY (companyID) REFERENCES Companies(companyID)
 );
 
 CREATE TABLE AnnualReports (
+  annualReportID INT NOT NULL AUTO_INCREMENT,
   symbol VARCHAR(5),
   revenue float,
   revenueGrowth float,
@@ -121,6 +123,7 @@ CREATE TABLE AnnualReports (
   totalDebt float,
   companyID INT,
   fiscalYear int(4),
+  PRIMARY KEY (annualReportID),
   FOREIGN KEY (companyID) REFERENCES Companies(companyID)
   );
 

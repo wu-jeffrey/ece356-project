@@ -19,6 +19,24 @@ SET ds.companyID = c.companyID;
 
 ALTER TABLE Leaders ADD Constraint fk_company_id FOREIGN KEY (companyID) REFERENCES Companies(companyID);
 
+UPDATE DayStats ds
+INNER JOIN Companies c ON c.symbol = ds.symbol
+SET ds.companyID = c.companyID;
+
+UPDATE IPOS ipos 
+INNER JOIN Companies c ON c.symbol = ipos.symbol
+SET 
+ipos.companyID = c.companyID,
+ipos.sectorID = c.sectorID,
+ipos.industryID = c.industryID;
+
+UPDATE AnnualReports a
+INNER JOIN Companies c ON c.symbol = a.symbol
+SET a.companyID = c.companyID;
+
+ALTER TABLE AnnualReports
+DROP COLUMN symbol;
+
 ALTER TABLE Companies 
 DROP COLUMN industryName;
 
@@ -28,16 +46,5 @@ DROP COLUMN sectorName;
 ALTER TABLE Industries
 DROP COLUMN sectorName;
 
-UPDATE DayStats ds
-INNER JOIN Companies c ON c.symbol = ds.symbol
-SET ds.companyID = c.companyID;
-
 ALTER TABLE DayStats
-DROP COLUMN symbol;
-
-UPDATE AnnualReports a
-INNER JOIN Companies c ON c.symbol = a.symbol
-SET a.companyID = c.companyID;
-
-ALTER TABLE AnnualReports
 DROP COLUMN symbol;
