@@ -44,67 +44,69 @@ def convert_csv_to_df(filename):
 
 
 with connection:
-    with connection.cursor() as cursor:
-        # DELETE ALL TABLES
-        print(
-            "----------------------------------Deleting all existing tables-------------------------------\n"
-        )
-        cursor.execute(
-            "DROP TABLE IF EXISTS `AnnualReports`, `Companies`, `DayStats`, `FiscalYear`, `IPOs`, `Industries`, `Leaders`, `Sectors`"
-        )
-        connection.commit()
-        # Create Tables
-        print(
-            "----------------------------------Creating new tables--------------------------------------\n"
-        )
-        fn = pathlib.Path(__file__).parent / "create_tables.sql"
-        executeScriptsFromFile(cursor, fn)
-        connection.commit()
+    # with connection.cursor() as cursor:
+    #     # DELETE ALL TABLES
+    #     print(
+    #         "----------------------------------Deleting all existing tables-------------------------------\n"
+    #     )
+    #     cursor.execute(
+    #         "DROP TABLE IF EXISTS `AnnualReports`, `Companies`, `DayStats`, `FiscalYear`, `IPOs`, `Industries`, `Leaders`, `Sectors`"
+    #     )
+    #     connection.commit()
+    #     # Create Tables
+    #     print(
+    #         "----------------------------------Creating new tables--------------------------------------\n"
+    #     )
+    #     fn = pathlib.Path(__file__).parent / "create_tables.sql"
+    #     executeScriptsFromFile(cursor, fn)
+    #     connection.commit()
 
     with connection.cursor() as cursor:
-        # Input Company Data
-        file_name = pathlib.Path(__file__).parent / "data_csv/company.csv"
-        df = convert_csv_to_df(file_name)
-        for row in df.itertuples():
-            sql = "INSERT INTO `Companies` (`symbol`, `companyName`, `yearFounded`, `numberOfEmployees`, `city`, `stateCountry`) VALUES (%s, %s, %s, %s, %s, %s)"
-            if row.Sector != None:
-                try:
-                    sector_sql = "INSERT INTO Sectors (`sectorName`) VALUES (%s)"
-                    cursor.execute(sector_sql, (row.Sector))
-                except Exception as e:
-                    print("SQL Exception: ", e)
+        # # Input Company Data
+        # file_name = pathlib.Path(__file__).parent / "data_csv/company.csv"
+        # df = convert_csv_to_df(file_name)
+        # for row in df.itertuples():
+        #     sql = "INSERT INTO `Companies` (`symbol`, `companyName`, `yearFounded`, `numberOfEmployees`, `city`, `stateCountry`, `industryName`, `sectorName`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        #     if row.Sector != None:
+        #         try:
+        #             sector_sql = "INSERT INTO Sectors (`sectorName`) VALUES (%s)"
+        #             cursor.execute(sector_sql, (row.Sector))
+        #         except Exception as e:
+        #             print("SQL Exception: ", e)
 
-            if row.Industry != None:
-                try:
-                    industry_sql = (
-                        "INSERT INTO Industries (`name`, `sectorName`) VALUES (%s, %s)"
-                    )
-                    cursor.execute(industry_sql, (row.Industry, row.Sector))
-                except Exception as e:
-                    print("SQL Exception: ", e)
+        #     if row.Industry != None:
+        #         try:
+        #             industry_sql = (
+        #                 "INSERT INTO Industries (`name`, `sectorName`) VALUES (%s, %s)"
+        #             )
+        #             cursor.execute(industry_sql, (row.Industry, row.Sector))
+        #         except Exception as e:
+        #             print("SQL Exception: ", e)
 
-            cursor.execute(
-                sql,
-                (
-                    row.Symbol,
-                    row.Name,
-                    row.YearFounded,
-                    row.employees,
-                    row.City,
-                    row.stateCountry,
-                ),
-            )
+        #     cursor.execute(
+        #         sql,
+        #         (
+        #             row.Symbol,
+        #             row.Name,
+        #             row.YearFounded,
+        #             row.employees,
+        #             row.City,
+        #             row.stateCountry,
+        #             row.Industry,
+        #             row.Sector
+        #         ),
+        #     )
 
-            connection.commit()
-        print("INSERTED INTO COMPANIES, SECTORS, INDUSTRIES: ", len(df), "\n")
+        #     connection.commit()
+        # print("INSERTED INTO COMPANIES, SECTORS, INDUSTRIES: ", len(df), "\n")
 
         # Input Leader Data
         file_name = pathlib.Path(__file__).parent / "data_csv/leader.csv"
         df = convert_csv_to_df(file_name)
         for row in df.itertuples():
-            sql = "INSERT INTO `Leaders` (`name`, `age`, `gender`, `startDate` ) VALUES (%s, %s, %s, %s)"
+            sql = "INSERT INTO `Leaders` (`name`, `age`, `gender`, `startDate`, `company` ) VALUES (%s, %s, %s, %s, %s)"
             cursor.execute(
-                sql, (row.CEOName, row.CEOAge, row.CEOGender, row.CEOTakeOver)
+                sql, (row.CEOName, row.CEOAge, row.CEOGender, row.CEOTakeOver, row.Name)
             )
             connection.commit()
             result = cursor.fetchone()
