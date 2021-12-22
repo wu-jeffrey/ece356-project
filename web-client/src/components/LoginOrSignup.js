@@ -1,9 +1,18 @@
+import { useEffect } from 'react';
 import { Form, Input, Button, Card, Tabs } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../routing/authContext';
 
 export function LoginOrSignup() {
-  const { login } = useAuth();
+  const { login, isAuth } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate('/home');
+    }
+  })
 
   const onLogin = ({ email, password }) => {
     (async () => {
