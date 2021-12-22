@@ -13,4 +13,14 @@ router.get('/', (req, res, next) => {
   );
 });
 
+router.get('/:companyID', (req, res, next) => {
+  db.query(
+    `SELECT symbol, companyName, companyID FROM Companies WHERE companyID = ${req.params.companyID}`,
+    function (err, results) {
+      if (err) return next(err);
+      res.json({ company: results[0] });
+    }
+  );
+});
+
 module.exports = router;
