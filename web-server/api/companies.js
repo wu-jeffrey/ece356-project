@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/:companyID', (req, res, next) => {
   db.query(`
-    SELECT symbol, companyName, C.companyID, numberOfEmployees, city, stateCountry, I.name AS industryName, S.sectorName,
+    SELECT C.symbol, companyName, C.companyID, numberOfEmployees, city, stateCountry, I.name AS industryName, S.sectorName,
       L.name AS leaderName, L.age AS leaderAge, L.gender AS leaderGender
     FROM Companies AS C
       INNER JOIN Industries AS I ON C.industryID = I.industryID
@@ -25,7 +25,17 @@ router.get('/:companyID', (req, res, next) => {
     `,
     function (err, results) {
       if (err) return next(err);
-      res.json({ company: results[0] });
+
+      db.query(`
+        SELECT year, annualReportID, revenue, revenueGrowth, dividendYield
+        FROM AnnualReports
+        WHERE companyID = ${req.params.companyID}
+        `,
+        function (ar_err, annual_report_results) {
+          if (ar_err) return next(ar_err);
+          res.json({ company: results[0], annualReports: annual_report_results });
+        }
+      );
     }
   );
 });

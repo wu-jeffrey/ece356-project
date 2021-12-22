@@ -11,6 +11,7 @@ const app = express();
 app.use(express.json());
 app.use('/api/companies/', require('./api/companies'));
 app.use('/api/users/', require('./api/users'));
+app.use('/api/annual-reports/', require('./api/annualReports'));
 
 // Static route for frontend
 app.use(express.static(path.join(__dirname, 'web-client')));
