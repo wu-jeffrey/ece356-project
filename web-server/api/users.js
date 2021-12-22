@@ -38,8 +38,6 @@ router.get('/login', auth, (req, res, next) => {
     WHERE userID = '${req.userID}';
   `;
 
-  console.log(sql)
-
   db.query(sql, (err, result) => {
     if (err) return next(err);
     res.json({
@@ -67,7 +65,6 @@ router.post('/login', (req, res, next) => {
   `;
 
   db.query(sql, (err, result) => {
-    console.log(sql, result)
     if (err) {
       next(err);
     } else {

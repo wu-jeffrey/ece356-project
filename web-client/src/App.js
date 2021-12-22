@@ -30,16 +30,17 @@ function App() {
                       <Menu.Item key="history">
                         <NavLink to="/history">History</NavLink>
                       </Menu.Item>
-                      <Menu.Item style={{ marginLeft: 'auto' }} key="logout">
-                        <div type="text" onClick={() => { logout(); }}>Logout</div>
+                      <Menu.Item style={{ marginLeft: 'auto' }} onClick={logout} key="logout">
+                        <div>Logout</div>
                       </Menu.Item>
                     </Menu>
                   )}
                 </Header>
                 <Content style={{ padding: 64 }}>
                   <Routes>
-                    <Route path="/login" element={<LoginOrSignup />} />
+                    <Route path="*" element={<div>404 NOT FOUND</div>}></Route>
                     <Route path="/" element={<ProtectedRoute children={<Home />} />} />
+                    <Route path="/login" element={<LoginOrSignup />} />
                     <Route path="/companies" element={<ProtectedRoute children={<Companies />} />} />
                     <Route path="/history" element={<ProtectedRoute children={<History />} />} />
                   </Routes>
