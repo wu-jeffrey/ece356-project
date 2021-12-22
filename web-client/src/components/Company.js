@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Breadcrumb } from 'antd';
+import { Card, Button, Breadcrumb, Divider } from 'antd';
 import { useParams } from 'react-router-dom';
 
 export function Company() {
@@ -34,6 +34,38 @@ export function Company() {
           {company?.companyName}
         </Breadcrumb.Item>
       </Breadcrumb>
+      <Divider />
+
+      <Card style={{ margin: 12 }} >
+        <h4>Stock Symbol</h4>{company.symbol}
+        <Divider />
+        <h4>Sector</h4>{company.sectorName}
+        <Divider />
+        <h4>Industry</h4>{company.industryName}
+        <Divider />
+        <h4>Number of Employees</h4>{company.numberOfEmployees}
+        <Divider />
+        <h4>Location</h4>{company.city}, {company.stateCountry}
+      </Card>
+
+      <Card style={{ margin: 12 }} >
+        <h3>Leadership</h3>
+        <h4>Name</h4>{ }
+        <Divider />
+        <h4>Role</h4>{ }
+        <Divider />
+        <h4>Age</h4>{ }
+        <Divider />
+        <h4>Gender</h4>{ }
+      </Card>
+
+      <Card style={{ margin: 12 }} >
+        <h3>Trade Statistics</h3>
+      </Card>
+
+      <Card style={{ margin: 12 }} >
+        <h3>Fiscal Reports</h3>
+      </Card>
     </>
   );
 }
