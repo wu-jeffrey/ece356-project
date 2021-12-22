@@ -4,7 +4,8 @@
   "description": "Final Project for ECE 356 F2021",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
     "express": "^4.17.1",
     "js-sha512": "^0.8.0",
     "jsonwebtoken": "^8.5.1",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.15"
   }
 }
