@@ -6,6 +6,7 @@ import { ProtectedRoute } from "./routing/ProtectedRoute";
 import { Home } from "./components/Home";
 import { Companies } from "./components/Companies";
 import { Company } from "./components/Company";
+import { AnnualReport } from "./components/AnnualReport";
 import { History } from "./components/History";
 import { LoginOrSignup } from "./components/LoginOrSignup";
 
@@ -28,9 +29,6 @@ function App() {
                       <Menu.Item key="companies">
                         <NavLink to="/companies">Companies</NavLink>
                       </Menu.Item>
-                      <Menu.Item key="history">
-                        <NavLink to="/history">History</NavLink>
-                      </Menu.Item>
                       <Menu.Item style={{ marginLeft: 'auto' }} onClick={logout} key="logout">
                         <div>Logout</div>
                       </Menu.Item>
@@ -44,7 +42,8 @@ function App() {
                     <Route path="/login" element={<LoginOrSignup />} />
                     <Route path="/companies" element={<ProtectedRoute children={<Companies />} />} />
                     <Route path="/companies/:companyID" element={<ProtectedRoute children={<Company />} />} />
-                    <Route path="/history" element={<ProtectedRoute children={<History />} />} />
+                    <Route path="/companies/:companyID/history" element={<ProtectedRoute children={<History />} />} />
+                    <Route path="/annual-report/:annualReportID" element={<ProtectedRoute children={<AnnualReport />} />} />
                   </Routes>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>ECE 356 - Stocks Database ©2021 Created by Group 59</Footer>
