@@ -48,7 +48,7 @@ router.get('/:companyID', (req, res, next) => {
 
           db.query(`
             WITH
-              CompanyStats as (SELECT date, dayOfWeek, volume, open, high, low, close, adjclose FROM DayStats WHERE companyID = ${req.params.companyID})
+              CompanyStats as (SELECT date, volume, open, high, low, close, adjclose FROM DayStats WHERE companyID = ${req.params.companyID})
 
             SELECT * FROM CompanyStats
             WHERE date = (SELECT MAX(date) FROM CompanyStats);
