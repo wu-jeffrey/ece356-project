@@ -11,12 +11,12 @@ const router = express.Router();
 // @desc Register a New User
 // @access Public
 router.post('/', (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password, isInstitutional } = req.body;
   if (!email || !password) { return res.status(400).json({ msg: 'Please enter all fields' }); }
 
   const hash = sha512(password);
-  const sql = `INSERT INTO Users (email, password) VALUES (
-        '${email}', SHA2('${hash}', 512)
+  const sql = `INSERT INTO Users (email, password, institutional) VALUES (
+        '${email}', SHA2('${hash}', 512), ${Number(!!isInstitutional)}
       );`;
 
   db.query(sql, (err, result) => {
