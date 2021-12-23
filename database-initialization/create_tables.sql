@@ -135,3 +135,15 @@ CREATE TABLE Users (
 
   PRIMARY KEY (userID)
 );
+
+num,headline,url,publisher,date,stock
+
+CREATE TABLE Articles (
+  articleID INT NOT NULL AUTO_INCREMENT,
+  headline VARCHAR(255),
+  url VARCHAR(1000),
+  publisher VARCHAR(255),
+  date DATETIME,
+  symbol VARCHAR(5)
+  PRIMARY KEY (articleID)
+)
