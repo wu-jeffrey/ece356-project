@@ -17,9 +17,9 @@ app.use('/api/industries/', require('./api/industries'));
 app.use('/api/annual-reports/', require('./api/annualReports'));
 
 // Static route for frontend
-app.use(express.static(path.join(__dirname, 'web-client')));
+app.use(express.static(path.join(__dirname, 'static_client')));
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'web-client', 'index.html'));
+  res.sendFile(path.resolve(__dirname, 'static_client', 'index.html'));
 });
 
 app.use(httpErrorHandler);
