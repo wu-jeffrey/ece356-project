@@ -11,7 +11,8 @@ React based frontend client, ant-design UI, pretty straightforward. All the fron
 #### `web-server`
 nodejs/express based backend services / REST API. Theoretically, it's a proxy between Marmoset and the frontend
 
-# How to use (for the teaching team)
+### 🛑🛑 (START) FOR THE TEACHING TEAM🛑🛑
+# How to use
 Assuming the database, `db356_j387wu` is still accessible on Marmoset 4:
 
 Visit this webapp, hosted on heroku: [link](https://ece356-project-f21.herokuapp.com/)
@@ -29,7 +30,7 @@ Individual Investor:
 email: individualInvestor@test.com
 pwd: asd
 ```
-
+### 🛑🛑 (END) FOR THE TEACHING TEAM🛑🛑
 # How to use (locally)
 #### Assumptions / Pre-requisites
 1. Assuming the database, `db356_j387wu` is still accessible on Marmoset 4:
