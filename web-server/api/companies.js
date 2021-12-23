@@ -3,9 +3,21 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.get('/all/:sectorID?/:industryID?', (req, res, next) => {
+  let sql = "SELECT symbol, companyName, companyID FROM Companies"
+  if (req.params.sectorID && req.params.industryID) {
+    sql = `SELECT symbol, companyName, companyID
+            FROM Companies
+            WHERE industryID = ${req.params.industryID}`
+  } else if (req.params.sectorID) {
+    sql = `SELECT symbol, companyName, companyID
+            FROM Companies AS C
+              INNER JOIN Industries AS I ON I.industryID = C.industryID
+            WHERE I.sectorID = ${req.params.sectorID}`
+  }
+
   db.query(
-    "SELECT symbol, companyName, companyID FROM Companies",
+    sql,
     function (err, results) {
       if (err) return next(err);
       res.json({ companies: results });
@@ -43,7 +55,18 @@ router.get('/:companyID', (req, res, next) => {
             `,
             function (ds_err, ds_results) {
               if (ds_err) return next(ds_err);
-              res.json({ company: results[0], annualReports: annual_report_results, mostRecentDayStat: ds_results[0] });
+
+              db.query(`SELECT headline, url, publisher, date FROM Articles WHERE companyID = ${req.params.companyID} ORDER BY date desc;`,
+                function (art_err, article_results) {
+                  if (art_err) return next(art_err);
+
+                  res.json({
+                    company: results[0],
+                    annualReports: annual_report_results,
+                    mostRecentDayStat: ds_results[0],
+                    articles: article_results,
+                  });
+                })
             }
           );
         }

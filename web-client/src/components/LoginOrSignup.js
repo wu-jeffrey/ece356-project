@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Form, Input, Button, Card, Tabs } from 'antd';
+import { useEffect, useState } from 'react';
+import { Form, Input, Button, Card, Tabs, Checkbox } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../routing/authContext';
@@ -7,6 +7,8 @@ import { useAuth } from '../routing/authContext';
 export function LoginOrSignup() {
   const { login, isAuth } = useAuth();
   const navigate = useNavigate();
+
+  const [isInstitutional, setIsInstitutional] = useState(false);
 
   useEffect(() => {
     if (isAuth) {
@@ -31,8 +33,8 @@ export function LoginOrSignup() {
     })();
   };
 
-  const onSignup = ({ email, password, confirm_password }) => {
-    if (password !== confirm_password) {
+  const onSignup = ({ email, password, confirmPassword }) => {
+    if (password !== confirmPassword) {
       alert("Passwords do not match!")
     } else {
       (async () => {
@@ -43,7 +45,7 @@ export function LoginOrSignup() {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email: email, password: password }),
+          body: JSON.stringify({ email: email, password: password, isInstitutional: isInstitutional }),
         });
 
         if (response.status === 200) {
@@ -129,7 +131,7 @@ export function LoginOrSignup() {
               <Input.Password />
             </Form.Item>
 
-            <Form.Item label="Confirm Password" name="confirm_password"
+            <Form.Item label="Confirm Password" name="confirmPassword"
               rules={[
                 {
                   required: true,
@@ -138,6 +140,10 @@ export function LoginOrSignup() {
               ]}
             >
               <Input.Password />
+            </Form.Item>
+
+            <Form.Item name="isInstitutional" valuePropName="isInstitutional" wrapperCol={{ offset: 8, span: 16 }}>
+              <Checkbox onClick={e => setIsInstitutional(e.target.checked)}>Institutional Investor</Checkbox>
             </Form.Item>
 
             <Form.Item wrapperCol={{
