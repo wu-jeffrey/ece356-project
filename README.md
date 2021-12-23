@@ -16,6 +16,20 @@ Assuming the database, `db356_j387wu` is still accessible on Marmoset 4:
 
 Visit this webapp, hosted on heroku: [link](https://ece356-project-f21.herokuapp.com/)
 
+You can create an account but the application is pretty brittle so it's better to login using:
+
+```
+Institutional Investor:
+email: institutionalInvestor@test.com
+pwd: asdasd
+```
+
+```
+Individual Investor:
+email: individualInvestor@test.com
+pwd: asd
+```
+
 # How to use (locally)
 #### Assumptions / Pre-requisites
 1. Assuming the database, `db356_j387wu` is still accessible on Marmoset 4:
