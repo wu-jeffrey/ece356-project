@@ -55,7 +55,18 @@ router.get('/:companyID', (req, res, next) => {
             `,
             function (ds_err, ds_results) {
               if (ds_err) return next(ds_err);
-              res.json({ company: results[0], annualReports: annual_report_results, mostRecentDayStat: ds_results[0] });
+
+              db.query(`SELECT headline, url, publisher, date FROM Articles WHERE companyID = ${req.params.companyID} ORDER BY date desc;`,
+                function (art_err, article_results) {
+                  if (art_err) return next(art_err);
+
+                  res.json({
+                    company: results[0],
+                    annualReports: annual_report_results,
+                    mostRecentDayStat: ds_results[0],
+                    articles: article_results,
+                  });
+                })
             }
           );
         }
