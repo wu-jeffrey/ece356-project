@@ -6,7 +6,8 @@ export function Company() {
   const params = useParams();
   const [company, setCompany] = useState({});
   const [annualReports, setAnnualReports] = useState([]);
-  const [mostRecentDayStat, setMostRecentDayStat] = useState([]);
+  const [mostRecentDayStat, setMostRecentDayStat] = useState({});
+  const [articles, setArticles] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -24,6 +25,7 @@ export function Company() {
       setCompany(data.company);
       setAnnualReports(data.annualReports.map((c, i) => { c['key'] = i; return c; }));
       setMostRecentDayStat(data.mostRecentDayStat);
+      setArticles(data.articles.map((c, i) => { c['key'] = i; return c; }));
     })();
   }, [])
 
@@ -41,7 +43,7 @@ export function Company() {
       <Divider />
 
       <Card style={{ margin: 12 }} >
-        <h2>{company?.symbol} (Most Recent Stock Info) <Button href={`/companies/${company?.companyID}/history`} style={{ float: 'right' }}>Full History</Button></h2>
+        <h2>{company?.symbol} (Most Recent Stock Info) {mostRecentDayStat && (<Button href={`/companies/${company?.companyID}/history`} style={{ float: 'right' }}>Full History</Button>)}</h2>
         {mostRecentDayStat ? (<Row gutter={24}>
           <Col span={4}>
             <Card>
@@ -103,7 +105,7 @@ export function Company() {
       </Card>
 
       <Card style={{ margin: 12 }} >
-        <h3>Fiscal Reports</h3>
+        <h3>Annual Reports</h3>
         <Table
           columns={[
             { title: 'Year', dataIndex: 'year', key: 'year' },
@@ -126,6 +128,25 @@ export function Company() {
             },
           ]}
           dataSource={annualReports}
+        />
+      </Card>
+
+      <Card style={{ margin: 12 }} >
+        <h3>Articles</h3>
+        <Table
+          columns={[
+            {
+              title: 'Date', dataIndex: 'date', key: 'date',
+              render: (text, record) => (new Date(text)).toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' })
+            },
+            { title: 'Headline', dataIndex: 'headline', key: 'headline' },
+            { title: 'Publisher/Author', dataIndex: 'publisher', key: 'publisher' },
+            {
+              title: 'Source', dataIndex: 'url', key: 'url',
+              render: (text, record) => (<Button href={text} type='link'>link</Button>),
+            },
+          ]}
+          dataSource={articles}
         />
       </Card>
     </>
