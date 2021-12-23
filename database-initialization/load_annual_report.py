@@ -49,7 +49,7 @@ with connection:
             pathlib.Path(__file__).parent / "data_csv/2015AnnualReport.csv",
             pathlib.Path(__file__).parent / "data_csv/2016AnnualReport.csv",
             pathlib.Path(__file__).parent / "data_csv/2017AnnualReport.csv",
-            pathlib.Path(__file__).parent / "data_csv/2018AnnualReport.csv"
+            pathlib.Path(__file__).parent / "data_csv/2018AnnualReport.csv",
         ]
         for file_name in files:
             df = convert_csv_to_df(file_name)
@@ -92,7 +92,7 @@ with connection:
                         row.OperatingIncomeGrowth,
                         row.NetIncomeGrowth,
                         row.AssetGrowth,
-                        str(year)
+                        str(year),
                     ),
                 )
                 i += 1
