@@ -33,7 +33,7 @@ def executeScriptsFromFile(cursor, filename):
 
 
 def convert_csv_to_df(filename):
-    data = pd.read_csv(filename, nrows=15000)
+    data = pd.read_csv(filename)
     df = pd.DataFrame(data)
     df = df.where(pd.notnull(df), None)
     df = df.replace(np.nan, 0)
@@ -162,17 +162,18 @@ with connection:
         result = cursor.fetchall()
         symbols = set([x["Symbol"] for x in result])
 
-        file_name = pathlib.Path(__file__).parent / "data_csv/raw_analyst_ratings.csv"
+        file_name = pathlib.Path(__file__).parent / "data_csv/raw_partner_headlines.csv"
         df = convert_csv_to_df(file_name)
-        i = 1
+        i = 0
         for row in df.itertuples():
-            if row.stock in symbols:
+            i += 1
+            print("row: ", i)
+            if row.stock in symbols and i % 50 == 0:
 
                 sql = "INSERT INTO `Articles` (`headline`, `url`, `publisher`, `date`, `symbol`) VALUES (%s, %s, %s, %s, %s)"
                 cursor.execute(
                     sql, (row.headline, row.url, row.publisher, row.date, row.stock)
                 )
-                i += 1
                 if i % 1000 == 0:
                     connection.commit()  # commit every 1000 rows
-                    print("inserted {} rows".format(i))
+                    print("inserted {} rows".format(i / 50))
