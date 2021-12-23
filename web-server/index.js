@@ -12,6 +12,8 @@ app.use(express.json());
 app.use('/api/home/', require('./api/home'));
 app.use('/api/companies/', require('./api/companies'));
 app.use('/api/users/', require('./api/users'));
+app.use('/api/sectors/', require('./api/sectors'));
+app.use('/api/industries/', require('./api/industries'));
 app.use('/api/annual-reports/', require('./api/annualReports'));
 
 // Static route for frontend
