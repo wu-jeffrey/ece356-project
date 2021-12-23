@@ -41,7 +41,7 @@ export function Company() {
       <Divider />
 
       <Card style={{ margin: 12 }} >
-        <h2>{company?.symbol} (Most Recent Stock Info) <Button href={`/companies/${company?.companyID}/history`} style={{ float: 'right' }}>Full History</Button></h2>
+        <h2>{company?.symbol} (Most Recent Stock Info) {mostRecentDayStat && (<Button href={`/companies/${company?.companyID}/history`} style={{ float: 'right' }}>Full History</Button>)}</h2>
         {mostRecentDayStat ? (<Row gutter={24}>
           <Col span={4}>
             <Card>
