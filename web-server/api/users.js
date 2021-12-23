@@ -30,11 +30,11 @@ router.post('/', (req, res, next) => {
 });
 
 // @route GET api/users/login
-// @desc Authenticate a user
+// @desc Re-Authenticate an already signed in user who sends a token
 // @access Public
 router.get('/login', auth, (req, res, next) => {
   const sql = `
-    SELECT userID, email, admin FROM Users
+    SELECT userID, email, institutional FROM Users
     WHERE userID = '${req.userID}';
   `;
 
@@ -42,7 +42,7 @@ router.get('/login', auth, (req, res, next) => {
     if (err) return next(err);
     res.json({
       user: {
-        id: result.userID, email: result.email, admin: result.admin
+        id: result.userID, email: result.email, institutional: result.institutional
       }
     });
   });
@@ -72,7 +72,7 @@ router.post('/login', (req, res, next) => {
         user = result[0];
 
         jwt.sign(
-          { id: user.userID },
+          { id: user.userID, email: user.email, institutional: user.institutional },
           jwtSecret,
           { expiresIn: 3600 * 24 * 7 },
           (err, token) => {
@@ -83,7 +83,7 @@ router.post('/login', (req, res, next) => {
               user: {
                 id: user.userID,
                 email: user.email,
-                admin: user.admin,
+                institutional: result.institutional
               }
             })
           }

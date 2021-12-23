@@ -13,7 +13,11 @@ function auth(req, res, next) {
     // Verify token
     const decoded = jwt.verify(token, jwtSecret);
     // Add user from payload
-    req.userID = decoded.id;
+    req.user = {
+      userID: decoded.id,
+      email: decoded.email,
+      institutional: decoded.institutional,
+    }
     next();
   } catch (err) {
     res.status(400).json({ error: { msg: 'Invalid Token' } });

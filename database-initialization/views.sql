@@ -1,22 +1,25 @@
-CREATE VIEW Homepage AS 
+CREATE VIEW Homepage AS
   select (select count(*) from Sectors) as sector_count,
     (select count(*) from Industries) as industry_count,
     (select count(*) from Articles) as article_count,
     (select count(*) from Companies) as company_count;
 
-CREATE VIEW Individual AS
+CREATE VIEW IndividualAnnualReport AS
 (
-    SELECT c.*, ar.revenue, ar.dividendYield, ar.year, ar.marketCap, ar.grossProfit, s.sectorName, i.name as industryName
-    FROM Companies c 
-    INNER JOIN AnnualReports ar ON c.companyID = ar.companyID
-    INNER JOIN Sectors s ON s.sectorID = c.sectorID
-    INNER JOIN Industries i on i.industryID = c.industryID
+  SELECT annualReportID, year, C.companyName AS companyName, C.companyID AS companyID, revenue,
+    dividendYield, marketCap, grossProfit
+  FROM AnnualReports AS AR
+    INNER JOIN Companies AS C ON C.companyID = AR.companyID
 );
 
- CREATE VIEW Institution AS(
-     SELECT c.city, c.stateCountry, c.yearFounded, c.numberOfEmployees, c.companyName, ar.*, s.sectorName, i.name as industryName
-    FROM Companies c 
-    INNER JOIN AnnualReports ar ON ar.companyID = c.companyID
-    INNER JOIN Sectors s ON s.sectorID = c.sectorID
-    INNEr JOIN Industries i on i.industryID = c.industryID
+CREATE VIEW InstitutionAnnualReport AS
+(
+  SELECT annualReportID, year, C.companyName AS companyName, C.companyID AS companyID, revenue,
+    revenueGrowth, costOfRevenue, grossProfit, operatingExpenses,
+    operatingIncome, earningsBeforeTax, incomeTaxExpense, totalAssets, investments,
+    netIncome, netDebt, netCashFlow, freeCashFlow, dividendYield,
+    totalCurrentAsset, netProfitMargin, grossProfitMargin, assetGrowth,
+    operatingIncomeGrowth, netIncomeGrowth, marketCap, payables, totalDebt
+  FROM AnnualReports AS AR
+    INNER JOIN Companies AS C ON C.companyID = AR.companyID
 );
