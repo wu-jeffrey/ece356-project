@@ -18,16 +18,19 @@ Visit this webapp, hosted on heroku: [link]() # TODO ADD LINK ONCE DEPLOYED
 
 ## How to use (locally)
 #### Assumptions / Pre-requisites
-i. Assuming the database, `db356_j387wu` is still accessible on Marmoset 4:
-ii. You should have nodejs installed, version 12.18.3
+1. Assuming the database, `db356_j387wu` is still accessible on Marmoset 4:
+2. You should have nodejs installed, version 12.18.3
 
 #### Process
 1. Clone this repo `git clone ...`
 2. Install dependencies in both webapp folders
-Run both these commands from the project root directory,
-`cd web-client && npm install`
-`cd web-server && npm install`
+
+&nbsp;&nbsp;&nbsp;&nbsp;Run both these commands from the project root directory,\
+&nbsp;&nbsp;&nbsp;&nbsp;`cd web-client && npm install`\
+&nbsp;&nbsp;&nbsp;&nbsp;`cd web-server && npm install`
+
 3. Start both local servers
-Run both these commands from the project root directory,
-`cd web-client && npm start`
-`cd web-server && npm run server`
+
+&nbsp;&nbsp;&nbsp;&nbsp;Run both these commands from the project root directory,\
+&nbsp;&nbsp;&nbsp;&nbsp;`cd web-client && npm start`\
+&nbsp;&nbsp;&nbsp;&nbsp;`cd web-server && npm run server`
